@@ -1,0 +1,12 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo">
+  <!-- Placeholder mark for the loyalty app. Replace with your own logo.
+       Colors match the default Evergreen & Gold theme; edit the two
+       fills below (or swap this file entirely) when you rebrand. -->
+  <rect x="4" y="4" width="120" height="120" rx="28" fill="#0E7C66"/>
+  <!-- cup -->
+  <path d="M40 46h40a4 4 0 0 1 4 4v14a24 24 0 0 1-24 24h0a24 24 0 0 1-24-24V50a4 4 0 0 1 4-4Z" fill="#F4F7F5"/>
+  <!-- handle -->
+  <path d="M84 52h6a12 12 0 0 1 0 24h-6" stroke="#F4F7F5" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <!-- reward star -->
+  <path d="M60 18.5l3.2 6.7 7.3.9-5.4 5 1.4 7.2L60 40.8l-6.5 3.5 1.4-7.2-5.4-5 7.3-.9L60 18.5Z" fill="#D9A521"/>
+</svg>

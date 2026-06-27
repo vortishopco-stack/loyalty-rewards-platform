@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Page not found</title>
+  <style>
+    body { background:#0f0a05; color:#f5e6d3; font-family:system-ui,sans-serif;
+           display:flex; align-items:center; justify-content:center;
+           min-height:100vh; margin:0; text-align:center; }
+    .box { max-width:420px; padding:2rem; }
+    h1 { font-size:1.5rem; margin:0 0 .5rem; color:#f59e0b; }
+    p { color:#a8957a; margin:.25rem 0; }
+    a { color:#f59e0b; text-decoration:none; font-weight:600; }
+    a:hover { text-decoration:underline; }
+  </style>
+  <script>
+    // GitHub Pages SPA fallback.
+    // Works for BOTH custom domains (root: /) and project sites (/repo/).
+    // Detects the base path automatically from the current URL.
+    (function () {
+      var l = window.location;
+      var path = l.pathname;
+
+      // Determine how many leading path segments belong to the base.
+      // - Root domain or user/org page  → basePath = ""  → keep 0 segments
+      // - Project page (username.github.io/repo/)         → keep 1 segment
+      // We detect this by checking if the FIRST segment looks like a repo
+      // name (i.e. there's more path after it). If NEXT_PUBLIC_BASE_PATH was
+      // set at build time, the compiled app already knows its base; this
+      // 404.html is only a last-resort redirect for deep-link refreshes.
+      var segments = path.split('/').filter(Boolean);
+      var basePathSegments = 0;
+      // Heuristic: if there are 2+ segments, the first is likely the repo.
+      if (segments.length > 1) {
+        basePathSegments = 1;
+      }
+      var base = segments.slice(0, basePathSegments).join('/');
+      var rest = segments.slice(basePathSegments).join('/');
+      var target = '/' + (base ? base + '/' : '') + (rest ? '?/' + rest : '');
+      target += l.search ? (rest ? '&' : '?/') + l.search.slice(1).replace(/&/g, '~and~') : '';
+      target += l.hash;
+      l.replace(l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') + target);
+    })();
+  </script>
+</head>
+<body>
+  <div class="box">
+    <h1>Page not found</h1>
+    <p>Redirecting you to the home page…</p>
+    <p><a href="/">Click here if you are not redirected</a></p>
+  </div>
+</body>
+</html>

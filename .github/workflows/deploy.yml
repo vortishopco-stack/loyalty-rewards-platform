@@ -1,0 +1,109 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Determine Next.js base path
+        id: basepath
+        # GitHub does NOT allow saving a truly empty secret — "clearing" it
+        # often leaves whitespace or stale bytes, which then breaks Next.js
+        # ("basePath has to be either an empty string or a path prefix").
+        # So we never trust NEXT_PUBLIC_BASE_PATH directly. Instead we derive
+        # the final value here, where we can actually test for emptiness.
+        #
+        #   CUSTOM_DOMAIN set         -> base path MUST be empty (root-served site)
+        #   CUSTOM_DOMAIN empty       -> use NEXT_PUBLIC_BASE_PATH secret,
+        #                                 falling back to empty (root) if absent
+        env:
+          CUSTOM_DOMAIN: ${{ secrets.CUSTOM_DOMAIN }}
+          BASE_PATH_SECRET: ${{ secrets.NEXT_PUBLIC_BASE_PATH }}
+        run: |
+          if [ -n "$CUSTOM_DOMAIN" ]; then
+            echo "base_path=" >> "$GITHUB_OUTPUT"
+            echo "Using custom domain: $CUSTOM_DOMAIN (base path = empty)"
+          elif [ -n "$BASE_PATH_SECRET" ]; then
+            # Trim whitespace; validate it starts with /
+            CLEAN=$(echo "$BASE_PATH_SECRET" | xargs)
+            if [ -z "$CLEAN" ] || [ "${CLEAN:0:1}" != "/" ]; then
+              echo "WARNING: NEXT_PUBLIC_BASE_PATH secret is invalid ('$BASE_PATH_SECRET'), using empty base path (root)"
+              echo "base_path=" >> "$GITHUB_OUTPUT"
+            else
+              echo "base_path=$CLEAN" >> "$GITHUB_OUTPUT"
+              echo "Using base path from secret: $CLEAN"
+            fi
+          else
+            echo "base_path=" >> "$GITHUB_OUTPUT"
+            echo "No base path secret set, defaulting to empty (root / custom domain)"
+          fi
+
+      - name: Build static site
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.basepath.outputs.base_path }}
+        run: npm run build
+
+      - name: Add 404.html for SPA routing
+        run: cp out/index.html out/404.html
+
+      - name: Add .nojekyll file
+        # .nojekyll tells GitHub Pages NOT to process the site with Jekyll.
+        # This prevents files/folders starting with _ from being ignored.
+        run: touch out/.nojekyll
+
+      - name: Add CNAME for custom domain (if configured)
+        # To use a custom domain (e.g. yourdomain.com):
+        #   1. Go to repo Settings → Pages → Custom domain → enter your domain
+        #   2. (OR) create a GitHub secret named CUSTOM_DOMAIN with your domain
+        #   3. Add a CNAME DNS record pointing to USERNAME.github.io
+        # When CUSTOM_DOMAIN secret is set, this step writes it to out/CNAME
+        # so GitHub Pages serves the site at that domain automatically.
+        # NOTE: GitHub Actions does not allow the `secrets` context inside `if:`,
+        # so we route the secret through an env var and test that instead.
+        env:
+          CUSTOM_DOMAIN: ${{ secrets.CUSTOM_DOMAIN }}
+        if: env.CUSTOM_DOMAIN != ''
+        run: echo "$CUSTOM_DOMAIN" > out/CNAME
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

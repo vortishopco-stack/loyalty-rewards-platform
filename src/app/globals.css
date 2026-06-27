@@ -1,0 +1,361 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* ============================================================
+   THEME — "Evergreen & Gold"  (white-label default)
+   ------------------------------------------------------------
+   This is the ONE place to recolor the whole app. Change the
+   three --brand-* pairs below and every gradient, button, glass
+   panel, scrollbar and accent updates automatically — no need
+   to touch any component.
+
+   How it works: shadcn/ui reads the semantic tokens (--primary,
+   --accent, --background ...). The custom utility classes
+   (.glass-*, gradients, nav, etc.) read the raw RGB triplets
+   (--brand-primary-rgb ...) so they can build rgba() shadows
+   and translucency.
+
+   To rebrand, set:
+     --brand-primary       (main brand color, hex or oklch)
+     --brand-primary-rgb   (same color as "r,g,b")
+     --brand-accent        (secondary / reward color)
+     --brand-accent-rgb
+     --brand-deep          (darker shade for gradient ends)
+     --brand-deep-rgb
+   then mirror --primary / --accent below if you want shadcn
+   components to match. Ready-made presets live in
+   WHITE_LABEL_GUIDE.md.
+
+   Default palette:
+     Primary  jade green   #0E7C66   (trust / fresh / hospitality)
+     Accent   warm gold    #D9A521   (points / rewards / play)
+     Deep     pine         #0A5A4A   (gradient depth)
+     Surface  porcelain    #F4F7F5   (cool, clean — not cream)
+     Ink      deep slate   #16241F
+   ============================================================ */
+:root {
+  --radius: 0.625rem;
+
+  /* ---- BRAND COLOR PRIMITIVES (edit these to rebrand) ---- */
+  --brand-primary: #0E7C66;
+  --brand-primary-rgb: 14, 124, 102;
+  --brand-accent: #D9A521;
+  --brand-accent-rgb: 217, 165, 33;
+  --brand-deep: #0A5A4A;
+  --brand-deep-rgb: 10, 90, 74;
+
+  /* ---- SEMANTIC TOKENS (shadcn/ui) ---- */
+  /* BACKGROUNDS */
+  --background: oklch(0.972 0.006 168);     /* #F4F7F5 cool porcelain */
+  --card: oklch(1 0 0);                     /* clean white */
+  --card-foreground: oklch(0.255 0.024 168);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.255 0.024 168);
+  --secondary: oklch(0.940 0.012 168);      /* pale mint-gray */
+  --secondary-foreground: oklch(0.345 0.030 168);
+  --muted: oklch(0.942 0.010 168);
+  --muted-foreground: oklch(0.498 0.022 168);
+
+  /* TEXT */
+  --foreground: oklch(0.255 0.024 168);     /* #16241F deep slate-green ink */
+
+  /* ACCENTS */
+  --primary: oklch(0.520 0.103 168);        /* #0E7C66 jade */
+  --primary-foreground: oklch(0.992 0.004 168);
+  --accent: oklch(0.760 0.130 86);          /* #D9A521 warm gold */
+  --accent-foreground: oklch(0.255 0.024 168);
+  --ring: oklch(0.520 0.103 168);
+
+  /* BORDERS & INPUTS */
+  --border: oklch(0.892 0.012 168);
+  --input: oklch(0.905 0.012 168);
+
+  /* SEMANTIC */
+  --destructive: oklch(0.577 0.245 27.325);
+
+  /* CHART COLORS (evergreen + gold harmony) */
+  --chart-1: oklch(0.520 0.103 168);        /* jade */
+  --chart-2: oklch(0.760 0.130 86);         /* gold */
+  --chart-3: oklch(0.640 0.090 200);        /* teal */
+  --chart-4: oklch(0.430 0.080 160);        /* pine */
+  --chart-5: oklch(0.680 0.120 130);        /* leaf */
+
+  /* SIDEBAR (admin / employee panels) */
+  --sidebar: oklch(0.955 0.010 168);
+  --sidebar-foreground: oklch(0.255 0.024 168);
+  --sidebar-primary: oklch(0.520 0.103 168);
+  --sidebar-primary-foreground: oklch(0.992 0.004 168);
+  --sidebar-accent: oklch(0.940 0.012 168);
+  --sidebar-accent-foreground: oklch(0.345 0.030 168);
+  --sidebar-border: oklch(0.892 0.012 168);
+  --sidebar-ring: oklch(0.520 0.103 168);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ============================================================
+   GLASS / UTILITY STYLES — all driven by --brand-* variables
+   ============================================================ */
+
+/* Glassmorphism card — translucent white over the surface */
+.glass-card {
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(var(--brand-primary-rgb), 0.16);
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px rgba(var(--brand-deep-rgb), 0.08);
+}
+
+.glass-card-hover {
+  transition: all 0.3s ease;
+}
+
+.glass-card-hover:hover {
+  background: rgba(255, 255, 255, 0.82);
+  border-color: rgba(var(--brand-primary-rgb), 0.32);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(var(--brand-deep-rgb), 0.15);
+}
+
+/* Glass input */
+.glass-input {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(var(--brand-primary-rgb), 0.20);
+  border-radius: 0.625rem;
+  color: oklch(0.255 0.024 168);
+  transition: all 0.2s ease;
+}
+
+.glass-input::placeholder {
+  color: oklch(0.498 0.022 168);
+}
+
+.glass-input:focus {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(var(--brand-primary-rgb), 0.55);
+  box-shadow: 0 0 0 3px rgba(var(--brand-primary-rgb), 0.15);
+  outline: none;
+}
+
+/* Primary action button — brand gradient (jade → pine) */
+.glass-button {
+  background: linear-gradient(135deg, rgba(var(--brand-primary-rgb), 0.92), rgba(var(--brand-deep-rgb), 0.92));
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(var(--brand-primary-rgb), 0.4);
+  border-radius: 0.625rem;
+  color: #f3fbf8;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.glass-button:hover {
+  background: linear-gradient(135deg, rgba(var(--brand-primary-rgb), 1), rgba(var(--brand-deep-rgb), 1));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(var(--brand-primary-rgb), 0.35);
+}
+
+.glass-button-danger {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(220, 38, 38, 0.9));
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.glass-button-danger:hover {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 1), rgba(220, 38, 38, 1));
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.35);
+}
+
+.glass-button-success {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.9), rgba(22, 163, 74, 0.9));
+  border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+.glass-button-success:hover {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 1), rgba(22, 163, 74, 1));
+  box-shadow: 0 4px 20px rgba(34, 197, 94, 0.35);
+}
+
+/* Page background gradient — porcelain with a faint mint wash */
+.bg-gradient-main {
+  background:
+    radial-gradient(1200px 600px at 100% -10%, rgba(var(--brand-accent-rgb), 0.07), transparent 60%),
+    radial-gradient(1000px 700px at -10% 110%, rgba(var(--brand-primary-rgb), 0.08), transparent 55%),
+    linear-gradient(135deg, #f4f7f5, #eef3f0);
+}
+
+/* Class names kept for backwards compatibility, now brand-tinted */
+.bg-gradient-purple {
+  background: linear-gradient(135deg, rgba(var(--brand-primary-rgb), 0.12), rgba(var(--brand-accent-rgb), 0.12));
+}
+
+.bg-gradient-accent {
+  background: linear-gradient(135deg, rgba(var(--brand-primary-rgb), 0.18), rgba(var(--brand-accent-rgb), 0.18));
+}
+
+/* Animated gradient border — jade → gold → pine */
+.gradient-border {
+  position: relative;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 1rem;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg,
+    rgba(var(--brand-primary-rgb), 0.55),
+    rgba(var(--brand-accent-rgb), 0.55),
+    rgba(var(--brand-deep-rgb), 0.55));
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(var(--brand-primary-rgb), 0.05);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--brand-primary-rgb), 0.35);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--brand-primary-rgb), 0.55);
+}
+
+/* Pulse glow — uses the gold accent so reward moments pop */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(var(--brand-accent-rgb), 0.25); }
+  50% { box-shadow: 0 0 20px rgba(var(--brand-accent-rgb), 0.5); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Points counter animation */
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-count-up {
+  animation: count-up 0.5s ease-out;
+}
+
+/* Game canvas styling */
+.game-canvas {
+  border-radius: 1rem;
+  border: 2px solid rgba(var(--brand-primary-rgb), 0.3);
+  box-shadow: 0 0 30px rgba(var(--brand-primary-rgb), 0.1);
+}
+
+/* Progress bar — jade → gold sweep */
+.progress-purple {
+  background: linear-gradient(90deg,
+    rgb(var(--brand-primary-rgb)),
+    rgb(var(--brand-accent-rgb)));
+}
+
+/* Tab active indicator */
+.tab-active {
+  background: linear-gradient(135deg, rgba(var(--brand-primary-rgb), 0.18), rgba(var(--brand-deep-rgb), 0.18));
+  border-color: rgba(var(--brand-primary-rgb), 0.4);
+}
+
+/* Mobile bottom nav active state */
+.mobile-nav-item {
+  transition: all 0.2s ease;
+}
+
+.mobile-nav-item.active {
+  color: var(--brand-primary);
+}
+
+.mobile-nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 3px;
+  background: linear-gradient(90deg, rgb(var(--brand-primary-rgb)), rgb(var(--brand-accent-rgb)));
+  border-radius: 2px;
+}
+
+/* RTL Support */
+[dir="rtl"] .glass-input {
+  text-align: right;
+}
+
+[dir="rtl"] .mobile-nav-item.active::after {
+  left: 50%;
+  right: auto;
+}
+
+/* RTL icon flipping for directional icons */
+[dir="rtl"] .rtl-flip {
+  transform: scaleX(-1);
+}
